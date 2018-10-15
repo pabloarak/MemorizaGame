@@ -3,26 +3,35 @@ const violeta = document.getElementById('violeta');
 const naranja = document.getElementById('naranja');
 const verde = document.getElementById('verde');
 const btnEmpezar = document.getElementById('btnEmpezar');
-const ULTIMO_NIVEL = 10;
+const ULTIMO_NIVEL = 1;
 
 class Juego {
 
   constructor() {
+    this.inicializar = this.inicializar.bind(this);
     this.inicializar();
     this.generarSecuencia();
-    setTimeout(this.siguienteNivel,500);
+    setTimeout(this.siguienteNivel,500); // El callback se pasa sin parentesis, ya que la función que la llama se encarga de ello, es decir, de que se ejecute a su propio tiempo
   }
 
   inicializar() {
     this.siguienteNivel = this.siguienteNivel.bind(this);
     this.elegirColor = this.elegirColor.bind(this); // El bind nos ata al this de la clase y sin el estariamos atados solo al this del color (window)
-    btnEmpezar.classList.add('hide');
+    this.toggleBtnEmpezar();
     this.nivel = 1
     this.colores = {
       celeste,
       violeta,
       naranja,
       verde
+    }
+  }
+
+  toggleBtnEmpezar(){
+    if(btnEmpezar.classList.contains('hide')){
+      btnEmpezar.classList.remove('hide');
+    } else {
+      btnEmpezar.classList.add('hide');
     }
   }
 
@@ -103,14 +112,27 @@ class Juego {
         this.nivel++;
         this.eliminarEventosClick();
         if(this.nivel === (ULTIMO_NIVEL + 1)){
-          // Gano !
+          this.ganoElJuego();
         } else {
           setTimeout(this.siguienteNivel,2000);
         }
       }
     } else {
-      // Perdio...
+      this.perdioElJuego();
     }
+  }
+
+  ganoElJuego(){
+    swal('Memoriza Game','Felicitaciones, ganaste !!!','success')
+      .then(this.inicializar);
+  }
+
+  perdioElJuego(){
+    swal('Memoriza Game','Lo sentimos, has perdido, vuelve a intentarlo :)','error')
+      .then(()=>{
+        this.eliminarEventosClick();
+        this.inicializar();
+      });
   }
 }
 
