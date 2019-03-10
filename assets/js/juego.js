@@ -3,7 +3,7 @@ const violeta = document.getElementById('violeta');
 const naranja = document.getElementById('naranja');
 const verde = document.getElementById('verde');
 const btnEmpezar = document.getElementById('btnEmpezar');
-const ULTIMO_NIVEL = 1;
+const ULTIMO_NIVEL = 10;
 
 class Juego {
 
@@ -11,12 +11,12 @@ class Juego {
     this.inicializar = this.inicializar.bind(this);
     this.inicializar();
     this.generarSecuencia();
-    setTimeout(this.siguienteNivel,500); // El callback se pasa sin parentesis, ya que la función que la llama se encarga de ello, es decir, de que se ejecute a su propio tiempo
+    setTimeout(this.siguienteNivel,500);
   }
 
   inicializar() {
     this.siguienteNivel = this.siguienteNivel.bind(this);
-    this.elegirColor = this.elegirColor.bind(this); // El bind nos ata al this de la clase y sin el estariamos atados solo al this del color (window)
+    this.elegirColor = this.elegirColor.bind(this);
     this.toggleBtnEmpezar();
     this.nivel = 1
     this.colores = {
@@ -73,7 +73,7 @@ class Juego {
 
   iluminarSecuencia(){
     for(let i=0 ; i<this.nivel ; i++){
-      const color = this.transformarNumeroAColor(this.secuencia[i]); // con var queda el ultimo numero de la secuencia, se pisan
+      const color = this.transformarNumeroAColor(this.secuencia[i]);
       setTimeout(() => this.iluminarColor(color), 1000*i);
     }
   }
@@ -128,7 +128,7 @@ class Juego {
   }
 
   perdioElJuego(){
-    swal('Memoriza Game','Lo sentimos, has perdido, vuelve a intentarlo :)','error')
+    swal('Memoriza Game','Lo sentimos, has perdido, pero puedes volver a intentarlo ;)','error')
       .then(()=>{
         this.eliminarEventosClick();
         this.inicializar();
@@ -137,5 +137,5 @@ class Juego {
 }
 
 function empezarJuego() {
-  window.juego = new Juego()
+  window.juego = new Juego();
 }
